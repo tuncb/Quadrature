@@ -37,6 +37,14 @@ namespace ozp { namespace quadrature {
     };
   }
 
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  /// <summary> Integrates the given functin. </summary>
+  ///
+  /// <typeparam name="QuadratureType"> Type of the quadrature type. </typeparam>
+  /// <typeparam name="N">              Number of dimentions  </typeparam>
+  /// <typeparam name="LambdaType">     Type of the integration function. </typeparam>
+  /// <param name="fun"> The fun. </param>
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
   template <typename QuadratureType, unsigned int N, typename LambdaType> void integrate(LambdaType fun)
   {
     detail::QuadratureHelper<QuadratureType, N> helper;
