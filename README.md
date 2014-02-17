@@ -23,12 +23,12 @@ ozp::quadrature::integrate<ozp::quadrature::Gaussian<2>, 1>([](double ip1, doubl
 });
 
 // for 2 dimentions
-ozp::quadrature::integrate<ozp::quadrature::Gaussian<2>, 1>([](double ip1, double ip2, double w1, double w2){
+ozp::quadrature::integrate<ozp::quadrature::Gaussian<2>, 2>([](double ip1, double ip2, double w1, double w2){
 // integration function here
 });
 
 // for 3 dimentions
-ozp::quadrature::integrate<ozp::quadrature::Gaussian<2>, 1>([](double ip1, double ip2, double ip3, double w1, double w2, double w3){
+ozp::quadrature::integrate<ozp::quadrature::Gaussian<2>, 3>([](double ip1, double ip2, double ip3, double w1, double w2, double w3){
 // integration function here
 });
 ~~~~
