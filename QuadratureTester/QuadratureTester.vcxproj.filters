@@ -20,7 +20,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\quadrature\Gaussian.h">
+    <ClInclude Include="..\include\quadrature\quadrature.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

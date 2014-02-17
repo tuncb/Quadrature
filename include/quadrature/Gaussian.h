@@ -4,37 +4,35 @@
 namespace ozp { namespace quadrature {
 
 
-  template<size_t NDim, size_t N> struct Gaussian {};
+
+
+  template<unsigned int N> struct Gaussian {};
   
-  template<> struct Gaussian<NDim,1> 
+  template<> struct Gaussian<1> 
   {
     Gaussian()
     {
-      for (size_t i = 0; i < NDim; ++i) {
-        points[i][0] = 0.0;
-        weights[i][0] = 2.0;
-      }
+      points[0] = 0.0;
+      weights[0] = 2.0;
     }
-    const size_t ndim = NDim;
-    const size_t n = 1;
-    std::array<std::array<double, n>, NDim> points;
-    std::array<std::array<double, n>, NDim> weights;
+    unsigned int n()    const {return 1;}
+    std::array<double, 1> points;
+    std::array<double, 1> weights;
   };
 
-  template<> struct Gaussian<1,2> 
+  template<> struct Gaussian<2> 
   {
     Gaussian()
     {
-      for (size_t i = 0; i < NDim; ++i) {
-        points[i][0] = 0.0;
-        weights[i][0] = 2.0;
-      }
-    }
-    const size_t ndim = NDim;
-    const size_t n = 1;
-    std::array<std::array<double, n>, NDim> points;
-    std::array<std::array<double, n>, NDim> weights;
-  };
+      points[0] =  0.57735026919;
+      points[1] = -0.57735026919;
 
+      weights[0] = 1;
+      weights[1] = 1;
+    }
+    unsigned int n() const {return 2;}
+    std::array<double, 2> points;
+    std::array<double, 2> weights;
+  };
 
 }}
