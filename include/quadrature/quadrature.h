@@ -51,5 +51,4 @@ namespace ozp { namespace quadrature {
     helper.integrate(fun);
   }
 
-
 }}
