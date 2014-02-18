@@ -35,4 +35,21 @@ namespace ozp { namespace quadrature {
     std::array<double, 2> weights;
   };
 
+  template<> struct Gaussian<3> 
+  {
+    Gaussian()
+    {
+      points[0] =  0.77459666924;
+      points[1] = -0.77459666924;
+      points[2] = 0.0;
+
+      weights[0] = 0.55555555555;
+      weights[1] = 0.55555555555;
+      weights[2] = 0.88888888888;
+    }
+    unsigned int n() const {return 3;}
+    std::array<double, 3> points;
+    std::array<double, 3> weights;
+  };
+
 }}
