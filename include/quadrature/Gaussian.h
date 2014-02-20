@@ -79,7 +79,7 @@ namespace ozp { namespace quadrature {
 
       weights[0] = 0.5688888888888889;
       weights[1] = 0.4786286704993665;
-      weights[3] = 0.4786286704993665;
+      weights[2] = 0.4786286704993665;
       weights[3] = 0.2369268850561891;
       weights[4] = 0.2369268850561891;
     }
