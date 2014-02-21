@@ -88,4 +88,28 @@ namespace ozp { namespace quadrature {
     std::array<double, 5> weights;
   };
 
+  template<> struct Gaussian<6> 
+  {
+    Gaussian()
+    {
+      points[0] =  0.6612093864662645;
+      points[1] = -0.6612093864662645;
+      points[2] = -0.2386191860831969;
+      points[3] =  0.2386191860831969;
+      points[4] = -0.9324695142031521;
+      points[5] =  0.9324695142031521;
+
+      weights[0] = 0.3607615730481386;
+      weights[1] = 0.3607615730481386;
+      weights[2] = 0.4679139345726910;
+      weights[3] = 0.4679139345726910;
+      weights[4] = 0.1713244923791704;
+      weights[5] = 0.1713244923791704;
+    }
+    unsigned int n() const {return 6;}
+    std::array<double, 6> points;
+    std::array<double, 6> weights;
+  };
+
+
 }}

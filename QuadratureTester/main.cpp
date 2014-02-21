@@ -155,5 +155,37 @@ BOOST_AUTO_TEST_CASE(gauss_5_3)
 }
 
 
+BOOST_AUTO_TEST_CASE(gauss_6_1)
+{
+  double sum = 0.0;
+  auto q = ozp::quadrature::Gaussian<6>();
+  ozp::quadrature::integrate<1>(q, [&](double ip1, double w1) {
+    sum += compute_pos(ip1) * w1;
+  });
+  BOOST_CHECK_CLOSE( sum, 2.0, 0.00000001);
+}
+
+BOOST_AUTO_TEST_CASE(gauss_6_2)
+{
+  const unsigned int ndim = 2;
+  double sum = 0.0;
+  auto q = ozp::quadrature::Gaussian<6>();
+  ozp::quadrature::integrate<ndim>(q, [&](double ip1, double ip2, double w1, double w2) {
+    sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
+  });
+  BOOST_CHECK_CLOSE( sum, 4.0, 0.00000001);
+}
+
+BOOST_AUTO_TEST_CASE(gauss_6_3)
+{
+  const unsigned int ndim = 3;
+  double sum = 0.0;
+  auto q = ozp::quadrature::Gaussian<6>();
+  ozp::quadrature::integrate<ndim>(q, [&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
+    sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
+  });
+  BOOST_CHECK_CLOSE( sum, 8.0, 0.00000001);
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
