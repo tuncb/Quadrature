@@ -9,11 +9,11 @@
         projectUrl: "http://www.onezeroplus.com/quadrature";
 		iconUrl: "https://static.squarespace.com/static/52e29d9fe4b01bac1f6387d7/t/53020d83e4b02368396d6870/1392643462164/ozp_50_50.fw.png?format=100w";
         requireLicenseAcceptance:false;
-		summary:A small c++ library for implementation of quadrature rules.;
+		summary:"A small c++ library for implementation of quadrature rules.";
 		description: @"A small c++ library for implementation of quadrature rules.
 			ozp::quadrature::integrate<ozp::quadrature::Gaussian<2>, 1>([](double ip1, double w1){
 			});";
-        releaseNotes: @""; 
+        releaseNotes: @"added polymorphism & gauss quadrature up to 6 points"; 
         copyright: "Copyright (C) 2014 oneZeroPlus";
         tags: { native, c++, quadrature, integration, gauss, onezeroplus };
     }
