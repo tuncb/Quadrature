@@ -37,14 +37,21 @@ namespace ozp { namespace quadrature {
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   /// <summary> Quadrature base class. </summary>
-  /// <typeparam name="N"> Number of quadrature points. </typeparam>
   ////////////////////////////////////////////////////////////////////////////////////////////////////
-  template <unsigned int N> struct Quadrature
+  class Quadrature
   {
-    std::array<double, N> points;
-    std::array<double, N> weights;
+  public:
+    Quadrature(unsigned int n)  : _n(n) {
+      this->points.resize(_n);
+      this->weights.resize(_n);
+    } 
+    
+    std::vector<double> points;
+    std::vector<double> weights;
 
-    unsigned int n() const {return N;}
+    unsigned int n() const {return _n;}
+  private:
+    unsigned int _n;
   };
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////

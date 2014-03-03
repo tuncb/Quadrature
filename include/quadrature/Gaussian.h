@@ -3,18 +3,18 @@
 namespace ozp { namespace quadrature {
   template<unsigned int N> struct Gaussian {};
   
-  template<> struct Gaussian<1> : public Quadrature<1>
+  template<> struct Gaussian<1> : public Quadrature
   {
-    Gaussian()
+    Gaussian() : Quadrature(1)
     {
       points[0] = 0.0;
       weights[0] = 2.0;
     }
   };
 
-  template<> struct Gaussian<2> : public Quadrature<2> 
+  template<> struct Gaussian<2> : public Quadrature
   {
-    Gaussian()
+    Gaussian() : Quadrature(2)
     {
       points[0] =  0.57735026919;
       points[1] = -0.57735026919;
@@ -24,9 +24,9 @@ namespace ozp { namespace quadrature {
     }
   };
 
-  template<> struct Gaussian<3> : public Quadrature<3> 
+  template<> struct Gaussian<3> : public Quadrature
   {
-    Gaussian()
+    Gaussian() : Quadrature(3)
     {
       points[0] =  0.77459666924;
       points[1] = -0.77459666924;
@@ -38,9 +38,9 @@ namespace ozp { namespace quadrature {
     }
   };
 
-  template<> struct Gaussian<4>  : public Quadrature<4>
+  template<> struct Gaussian<4>  : public Quadrature
   {
-    Gaussian()
+    Gaussian() : Quadrature(4)
     {
       points[0] = -0.3399810435848563;
       points[1] =  0.3399810435848563;
@@ -54,9 +54,9 @@ namespace ozp { namespace quadrature {
     }
   };
 
-  template<> struct Gaussian<5>  : public Quadrature<5>
+  template<> struct Gaussian<5>  : public Quadrature
   {
-    Gaussian()
+    Gaussian() : Quadrature(5)
     {
       points[0] =  0.0;
       points[1] = -0.5384693101056831;
@@ -72,9 +72,9 @@ namespace ozp { namespace quadrature {
     }
   };
 
-  template<> struct Gaussian<6>  : public Quadrature<6>
+  template<> struct Gaussian<6>  : public Quadrature
   {
-    Gaussian()
+    Gaussian() : Quadrature(6)
     {
       points[0] =  0.6612093864662645;
       points[1] = -0.6612093864662645;
