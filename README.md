@@ -58,6 +58,9 @@ Boost license http://www.boost.org/users/license.html
 
 Change log
 ------------
+### 0.21
+* fixed missing headers
+
 ### 0.2
 * added gauss 4-5-6
 * added polymorphism 

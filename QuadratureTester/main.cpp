@@ -1,7 +1,6 @@
 #define BOOST_TEST_MODULE Quadrature
 
 #include <boost/test/unit_test.hpp>
-#include <quadrature\quadrature.h>
 #include <quadrature\Gaussian.h>
 
 

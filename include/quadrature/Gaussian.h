@@ -1,4 +1,5 @@
 #pragma once
+#include <quadrature\quadrature.h>
 
 namespace ozp { namespace quadrature {
   template<unsigned int N> struct Gaussian {};
