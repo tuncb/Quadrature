@@ -1,7 +1,7 @@
 ﻿nuget  {
     nuspec {
         id = quadrature;
-        version : 0.2;
+        version : 0.21;
         title: quadrature;
         authors: {oneZeroPlus};
         owners: {oneZeroPlus};
