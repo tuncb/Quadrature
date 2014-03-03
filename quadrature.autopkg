@@ -1,12 +1,12 @@
 ﻿nuget  {
     nuspec {
         id = quadrature;
-        version : 0.1;
+        version : 0.2;
         title: quadrature;
         authors: {oneZeroPlus};
         owners: {oneZeroPlus};
         licenseUrl: "http://www.boost.org/users/license.html";
-        projectUrl: "https://github.com/onezeroplus/Quadrature";
+        projectUrl: "http://www.onezeroplus.com/quadrature";
 		iconUrl: "https://static.squarespace.com/static/52e29d9fe4b01bac1f6387d7/t/53020d83e4b02368396d6870/1392643462164/ozp_50_50.fw.png?format=100w";
         requireLicenseAcceptance:false;
 		summary:A small c++ library for implementation of quadrature rules.;
