@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 
 namespace ozp { namespace quadrature {
 
@@ -33,6 +34,18 @@ namespace ozp { namespace quadrature {
       }
     };
   }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  /// <summary> Quadrature base class. </summary>
+  /// <typeparam name="N"> Number of quadrature points. </typeparam>
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  template <unsigned int N> struct Quadrature
+  {
+    std::array<double, N> points;
+    std::array<double, N> weights;
+
+    unsigned int n() const {return N;}
+  };
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   /// <summary> Integrates the given function. </summary>

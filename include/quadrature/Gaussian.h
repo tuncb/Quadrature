@@ -1,22 +1,18 @@
 #pragma once
-#include <array>
 
 namespace ozp { namespace quadrature {
   template<unsigned int N> struct Gaussian {};
   
-  template<> struct Gaussian<1> 
+  template<> struct Gaussian<1> : public Quadrature<1>
   {
     Gaussian()
     {
       points[0] = 0.0;
       weights[0] = 2.0;
     }
-    unsigned int n()    const {return 1;}
-    std::array<double, 1> points;
-    std::array<double, 1> weights;
   };
 
-  template<> struct Gaussian<2> 
+  template<> struct Gaussian<2> : public Quadrature<2> 
   {
     Gaussian()
     {
@@ -26,12 +22,9 @@ namespace ozp { namespace quadrature {
       weights[0] = 1;
       weights[1] = 1;
     }
-    unsigned int n() const {return 2;}
-    std::array<double, 2> points;
-    std::array<double, 2> weights;
   };
 
-  template<> struct Gaussian<3> 
+  template<> struct Gaussian<3> : public Quadrature<3> 
   {
     Gaussian()
     {
@@ -43,12 +36,9 @@ namespace ozp { namespace quadrature {
       weights[1] = 0.55555555555;
       weights[2] = 0.88888888888;
     }
-    unsigned int n() const {return 3;}
-    std::array<double, 3> points;
-    std::array<double, 3> weights;
   };
 
-  template<> struct Gaussian<4> 
+  template<> struct Gaussian<4>  : public Quadrature<4>
   {
     Gaussian()
     {
@@ -62,12 +52,9 @@ namespace ozp { namespace quadrature {
       weights[2] = 0.3478548451374538;
       weights[3] = 0.3478548451374538;
     }
-    unsigned int n() const {return 4;}
-    std::array<double, 4> points;
-    std::array<double, 4> weights;
   };
 
-  template<> struct Gaussian<5> 
+  template<> struct Gaussian<5>  : public Quadrature<5>
   {
     Gaussian()
     {
@@ -83,12 +70,9 @@ namespace ozp { namespace quadrature {
       weights[3] = 0.2369268850561891;
       weights[4] = 0.2369268850561891;
     }
-    unsigned int n() const {return 5;}
-    std::array<double, 5> points;
-    std::array<double, 5> weights;
   };
 
-  template<> struct Gaussian<6> 
+  template<> struct Gaussian<6>  : public Quadrature<6>
   {
     Gaussian()
     {
@@ -106,9 +90,6 @@ namespace ozp { namespace quadrature {
       weights[4] = 0.1713244923791704;
       weights[5] = 0.1713244923791704;
     }
-    unsigned int n() const {return 6;}
-    std::array<double, 6> points;
-    std::array<double, 6> weights;
   };
 
 
