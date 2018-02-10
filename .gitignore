@@ -214,3 +214,4 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 quadrature.0.1.nupkg
+/.vscode
