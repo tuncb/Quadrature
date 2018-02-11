@@ -1,190 +1,187 @@
-#define BOOST_TEST_MODULE Quadrature
+#define CATCH_CONFIG_MAIN
 
-#include <boost/test/unit_test.hpp>
+#include "catch.hpp"
 #include <quadrature\Gaussian.h>
 
-
-double compute_pos(double x) { return x + 1.0;}
-
-BOOST_AUTO_TEST_SUITE(gauss)
-
-BOOST_AUTO_TEST_CASE(gauss_1_1)
+TEST_CASE("quadrature::integrate with Gauss", "[integrate]") 
 {
-  double sum = 0.0;
-  ozp::quadrature::integrate<ozp::quadrature::Gaussian<1>, 1>([&](double ip1, double w1) {
-    sum += compute_pos(ip1) * w1;
-  });
-  BOOST_CHECK_CLOSE( sum, 2.0, 0.00000001);
+  auto compute_pos = [](double x) { return x + 1.0; };
+
+  SECTION("#Dimension = 1, #Integration Points = 1")
+  {
+    double sum = 0.0;
+    ozp::quadrature::integrate<ozp::quadrature::Gaussian<1>, 1>([&](double ip1, double w1) {
+      sum += compute_pos(ip1) * w1;
+    });
+    REQUIRE(sum == Approx(2.0));
+  }
+
+  SECTION("Dimension = 2, #Integration Points = 1")
+  {
+    const unsigned int ndim = 2;
+    double sum = 0.0;
+    ozp::quadrature::integrate<ozp::quadrature::Gaussian<1>, ndim>([&](double ip1, double ip2, double w1, double w2) {
+      sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
+    });
+    REQUIRE(sum == Approx(4.0));
+  }
+  
+  SECTION("Dimension = 3, #Integration Points = 1")
+  {
+    const unsigned int ndim = 3;
+    double sum = 0.0;
+    ozp::quadrature::integrate<ozp::quadrature::Gaussian<1>, ndim>([&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
+      sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
+    });
+    REQUIRE(sum == Approx(8.0));
+  }
+
+  SECTION("Dimension = 1, #Integration Points = 2")
+  {
+    double sum = 0.0;
+    ozp::quadrature::integrate<ozp::quadrature::Gaussian<2>, 1>([&](double ip1, double w1) {
+      sum += compute_pos(ip1) * w1;
+    });
+    REQUIRE(sum == Approx(2.0));
+  }
+
+  SECTION("Dimension = 2, #Integration Points = 2")
+  {
+    const unsigned int ndim = 2;
+    double sum = 0.0;
+    ozp::quadrature::integrate<ozp::quadrature::Gaussian<2>, ndim>([&](double ip1, double ip2, double w1, double w2) {
+      sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
+    });
+    REQUIRE(sum == Approx(4.0));
+  }
+
+  SECTION("Dimension = 3, #Integration Points = 2")
+  {
+    const unsigned int ndim = 3;
+    double sum = 0.0;
+    ozp::quadrature::integrate<ozp::quadrature::Gaussian<2>, ndim>([&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
+      sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
+    });
+    REQUIRE(sum == Approx(8.0));
+  }
+
+  SECTION("Dimension = 1, #Integration Points = 3")
+  {
+    double sum = 0.0;
+    ozp::quadrature::integrate<ozp::quadrature::Gaussian<3>, 1>([&](double ip1, double w1) {
+      sum += compute_pos(ip1) * w1;
+    });
+    REQUIRE(sum == Approx(2.0));
+  }
+
+  SECTION("Dimension = 2, #Integration Points = 3")
+  {
+    const unsigned int ndim = 2;
+    double sum = 0.0;
+    ozp::quadrature::integrate<ozp::quadrature::Gaussian<3>, ndim>([&](double ip1, double ip2, double w1, double w2) {
+      sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
+    });
+    REQUIRE(sum == Approx(4.0));
+  }
+
+  SECTION("Dimension = 3, #Integration Points = 3")
+  {
+    const unsigned int ndim = 3;
+    double sum = 0.0;
+    ozp::quadrature::integrate<ozp::quadrature::Gaussian<3>, ndim>([&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
+      sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
+    });
+    REQUIRE(sum == Approx(8.0));
+  }
+
+  SECTION("Dimension = 1, #Integration Points = 4")
+  {
+    double sum = 0.0;
+    ozp::quadrature::integrate<ozp::quadrature::Gaussian<4>, 1>([&](double ip1, double w1) {
+      sum += compute_pos(ip1) * w1;
+    });
+    REQUIRE(sum == Approx(2.0));
+  }
+
+  SECTION("Dimension = 2, #Integration Points = 4")
+  {
+    const unsigned int ndim = 2;
+    double sum = 0.0;
+    ozp::quadrature::integrate<ozp::quadrature::Gaussian<4>, ndim>([&](double ip1, double ip2, double w1, double w2) {
+      sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
+    });
+    REQUIRE(sum == Approx(4.0));
+  }
+
+  SECTION("Dimension = 3, #Integration Points = 4")
+  {
+    const unsigned int ndim = 3;
+    double sum = 0.0;
+    ozp::quadrature::integrate<ozp::quadrature::Gaussian<4>, ndim>([&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
+      sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
+    });
+    REQUIRE(sum == Approx(8.0));
+  }
+
+  SECTION("Dimension = 1, #Integration Points = 5")
+  {
+    double sum = 0.0;
+    ozp::quadrature::integrate<ozp::quadrature::Gaussian<5>, 1>([&](double ip1, double w1) {
+      sum += compute_pos(ip1) * w1;
+    });
+    REQUIRE(sum == Approx(2.0));
+  }
+
+  SECTION("Dimension = 2, #Integration Points = 5")
+  {
+    const unsigned int ndim = 2;
+    double sum = 0.0;
+    ozp::quadrature::integrate<ozp::quadrature::Gaussian<5>, ndim>([&](double ip1, double ip2, double w1, double w2) {
+      sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
+    });
+    REQUIRE(sum == Approx(4.0));
+  }
+
+  SECTION("Dimension = 3, #Integration Points = 5")
+  {
+    const unsigned int ndim = 3;
+    double sum = 0.0;
+    ozp::quadrature::integrate<ozp::quadrature::Gaussian<5>, ndim>([&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
+      sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
+    });
+    REQUIRE(sum == Approx(8.0));
+  }
+
+
+  SECTION("Dimension = 1, #Integration Points = 6")
+  {
+    double sum = 0.0;
+    auto q = ozp::quadrature::Gaussian<6>();
+    ozp::quadrature::integrate<1>(q, [&](double ip1, double w1) {
+      sum += compute_pos(ip1) * w1;
+    });
+    REQUIRE(sum == Approx(2.0));
+  }
+
+  SECTION("Dimension = 2, #Integration Points = 6")
+  {
+    const unsigned int ndim = 2;
+    double sum = 0.0;
+    auto q = ozp::quadrature::Gaussian<6>();
+    ozp::quadrature::integrate<ndim>(q, [&](double ip1, double ip2, double w1, double w2) {
+      sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
+    });
+    REQUIRE(sum == Approx(4.0));
+  }
+
+  SECTION("Dimension = 3, #Integration Points = 6")
+  {
+    const unsigned int ndim = 3;
+    double sum = 0.0;
+    auto q = ozp::quadrature::Gaussian<6>();
+    ozp::quadrature::integrate<ndim>(q, [&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
+      sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
+    });
+    REQUIRE(sum == Approx(8.0));
+  }
 }
-
-BOOST_AUTO_TEST_CASE(gauss_1_2)
-{
-  const unsigned int ndim = 2;
-  double sum = 0.0;
-  ozp::quadrature::integrate<ozp::quadrature::Gaussian<1>, ndim>([&](double ip1, double ip2, double w1, double w2) {
-    sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
-  });
-  BOOST_CHECK_CLOSE( sum, 4.0, 0.00000001);
-}
-
-BOOST_AUTO_TEST_CASE(gauss_1_3)
-{
-  const unsigned int ndim = 3;
-  double sum = 0.0;
-  ozp::quadrature::integrate<ozp::quadrature::Gaussian<1>, ndim>([&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
-    sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
-  });
-  BOOST_CHECK_CLOSE( sum, 8.0, 0.00000001);
-}
-
-BOOST_AUTO_TEST_CASE(gauss_2_1)
-{
-  double sum = 0.0;
-  ozp::quadrature::integrate<ozp::quadrature::Gaussian<2>, 1>([&](double ip1, double w1) {
-    sum += compute_pos(ip1) * w1;
-  });
-  BOOST_CHECK_CLOSE( sum, 2.0, 0.00000001);
-}
-
-BOOST_AUTO_TEST_CASE(gauss_2_2)
-{
-  const unsigned int ndim = 2;
-  double sum = 0.0;
-  ozp::quadrature::integrate<ozp::quadrature::Gaussian<2>, ndim>([&](double ip1, double ip2, double w1, double w2) {
-    sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
-  });
-  BOOST_CHECK_CLOSE( sum, 4.0, 0.00000001);
-}
-
-BOOST_AUTO_TEST_CASE(gauss_2_3)
-{
-  const unsigned int ndim = 3;
-  double sum = 0.0;
-  ozp::quadrature::integrate<ozp::quadrature::Gaussian<2>, ndim>([&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
-    sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
-  });
-  BOOST_CHECK_CLOSE( sum, 8.0, 0.00000001);
-}
-
-BOOST_AUTO_TEST_CASE(gauss_3_1)
-{
-  double sum = 0.0;
-  ozp::quadrature::integrate<ozp::quadrature::Gaussian<3>, 1>([&](double ip1, double w1) {
-    sum += compute_pos(ip1) * w1;
-  });
-  BOOST_CHECK_CLOSE( sum, 2.0, 0.00000001);
-}
-
-BOOST_AUTO_TEST_CASE(gauss_3_2)
-{
-  const unsigned int ndim = 2;
-  double sum = 0.0;
-  ozp::quadrature::integrate<ozp::quadrature::Gaussian<3>, ndim>([&](double ip1, double ip2, double w1, double w2) {
-    sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
-  });
-  BOOST_CHECK_CLOSE( sum, 4.0, 0.00000001);
-}
-
-BOOST_AUTO_TEST_CASE(gauss_3_3)
-{
-  const unsigned int ndim = 3;
-  double sum = 0.0;
-  ozp::quadrature::integrate<ozp::quadrature::Gaussian<3>, ndim>([&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
-    sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
-  });
-  BOOST_CHECK_CLOSE( sum, 8.0, 0.00000001);
-}
-
-BOOST_AUTO_TEST_CASE(gauss_4_1)
-{
-  double sum = 0.0;
-  ozp::quadrature::integrate<ozp::quadrature::Gaussian<4>, 1>([&](double ip1, double w1) {
-    sum += compute_pos(ip1) * w1;
-  });
-  BOOST_CHECK_CLOSE( sum, 2.0, 0.00000001);
-}
-
-BOOST_AUTO_TEST_CASE(gauss_4_2)
-{
-  const unsigned int ndim = 2;
-  double sum = 0.0;
-  ozp::quadrature::integrate<ozp::quadrature::Gaussian<4>, ndim>([&](double ip1, double ip2, double w1, double w2) {
-    sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
-  });
-  BOOST_CHECK_CLOSE( sum, 4.0, 0.00000001);
-}
-
-BOOST_AUTO_TEST_CASE(gauss_4_3)
-{
-  const unsigned int ndim = 3;
-  double sum = 0.0;
-  ozp::quadrature::integrate<ozp::quadrature::Gaussian<4>, ndim>([&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
-    sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
-  });
-  BOOST_CHECK_CLOSE( sum, 8.0, 0.00000001);
-}
-
-BOOST_AUTO_TEST_CASE(gauss_5_1)
-{
-  double sum = 0.0;
-  ozp::quadrature::integrate<ozp::quadrature::Gaussian<5>, 1>([&](double ip1, double w1) {
-    sum += compute_pos(ip1) * w1;
-  });
-  BOOST_CHECK_CLOSE( sum, 2.0, 0.00000001);
-}
-
-BOOST_AUTO_TEST_CASE(gauss_5_2)
-{
-  const unsigned int ndim = 2;
-  double sum = 0.0;
-  ozp::quadrature::integrate<ozp::quadrature::Gaussian<5>, ndim>([&](double ip1, double ip2, double w1, double w2) {
-    sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
-  });
-  BOOST_CHECK_CLOSE( sum, 4.0, 0.00000001);
-}
-
-BOOST_AUTO_TEST_CASE(gauss_5_3)
-{
-  const unsigned int ndim = 3;
-  double sum = 0.0;
-  ozp::quadrature::integrate<ozp::quadrature::Gaussian<5>, ndim>([&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
-    sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
-  });
-  BOOST_CHECK_CLOSE( sum, 8.0, 0.00000001);
-}
-
-
-BOOST_AUTO_TEST_CASE(gauss_6_1)
-{
-  double sum = 0.0;
-  auto q = ozp::quadrature::Gaussian<6>();
-  ozp::quadrature::integrate<1>(q, [&](double ip1, double w1) {
-    sum += compute_pos(ip1) * w1;
-  });
-  BOOST_CHECK_CLOSE( sum, 2.0, 0.00000001);
-}
-
-BOOST_AUTO_TEST_CASE(gauss_6_2)
-{
-  const unsigned int ndim = 2;
-  double sum = 0.0;
-  auto q = ozp::quadrature::Gaussian<6>();
-  ozp::quadrature::integrate<ndim>(q, [&](double ip1, double ip2, double w1, double w2) {
-    sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
-  });
-  BOOST_CHECK_CLOSE( sum, 4.0, 0.00000001);
-}
-
-BOOST_AUTO_TEST_CASE(gauss_6_3)
-{
-  const unsigned int ndim = 3;
-  double sum = 0.0;
-  auto q = ozp::quadrature::Gaussian<6>();
-  ozp::quadrature::integrate<ndim>(q, [&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
-    sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
-  });
-  BOOST_CHECK_CLOSE( sum, 8.0, 0.00000001);
-}
-
-
-BOOST_AUTO_TEST_SUITE_END()
