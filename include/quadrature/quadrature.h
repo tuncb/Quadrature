@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-namespace ozp { namespace quadrature {
+namespace quadrature {
 
   namespace detail {
     template <typename Quadrature, unsigned int Dim> struct QuadratureHelper {};
@@ -84,4 +84,4 @@ namespace ozp { namespace quadrature {
     helper.integrate(q, fun);
   }
 
-}}
+}
