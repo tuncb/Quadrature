@@ -1,7 +1,7 @@
 #pragma once
 #include <quadrature\quadrature.h>
 
-namespace ozp { namespace quadrature {
+namespace quadrature {
   template<unsigned int N> struct Gaussian {};
   
   template<> struct Gaussian<1> : public Quadrature
@@ -94,4 +94,4 @@ namespace ozp { namespace quadrature {
   };
 
 
-}}
+}
