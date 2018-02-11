@@ -9,7 +9,7 @@ double compute_pos(double x)
 int main()
 {
   double sum = 0.0;
-  ozp::quadrature::integrate<ozp::quadrature::Gaussian<2>, 1>([&](double ip1, double w1) {
+  quadrature::integrate<quadrature::Gaussian<2>, 1>([&](double ip1, double w1) {
     sum += compute_pos(ip1) * w1;
   });
 
