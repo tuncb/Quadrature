@@ -3,6 +3,25 @@
 
 namespace quadrature {
 
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  /// <summary> Quadrature base class. </summary>
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  class Quadrature
+  {
+  public:
+    Quadrature(unsigned int n) : _n(n) {
+      this->points.resize(_n);
+      this->weights.resize(_n);
+    }
+
+    std::vector<double> points;
+    std::vector<double> weights;
+
+    unsigned int n() const { return _n; }
+  private:
+    unsigned int _n;
+  };
+
   namespace detail {
 
     template <unsigned int N> struct Interval {};
@@ -26,9 +45,9 @@ namespace quadrature {
       fun(change_point(a1, b1, x), change_point(a2, b2, y), change_point(a3, b3, z), change_weight(a1, b1, w1), change_weight(a2, b2, w2), change_weight(a3, b3, w3));
     }
 
-    template <typename Quadrature, unsigned int Dim> struct QuadratureHelper {};
+    template <unsigned int Dim> struct QuadratureHelper {};
 
-    template <typename Quadrature> struct QuadratureHelper<Quadrature, 1> {
+    template <> struct QuadratureHelper<1> {
       template <typename LambdaType> void integrate_interval(const Quadrature& q, LambdaType fun, const detail::Interval<1>& interval)
       {
         for (unsigned int i = 0; i < q.n(); ++i) change_interval(interval.a1, interval.b1, q.points[i], q.weights[i], fun);
@@ -39,7 +58,7 @@ namespace quadrature {
       }
     };
 
-    template <typename Quadrature> struct QuadratureHelper<Quadrature, 2> {
+    template <> struct QuadratureHelper<2> {
       template <typename LambdaType> void integrate_interval(const Quadrature& q, LambdaType fun, const detail::Interval<2>& interval)
       {
         const auto n = q.n();
@@ -54,7 +73,7 @@ namespace quadrature {
       }
     };
 
-    template <typename Quadrature> struct QuadratureHelper < Quadrature, 3 > {
+    template <> struct QuadratureHelper <3> {
       template <typename LambdaType> void integrate_interval(const Quadrature& q, LambdaType fun, const detail::Interval<3>& interval)
       {
         const auto n = q.n();
@@ -96,25 +115,6 @@ namespace quadrature {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////
-  /// <summary> Quadrature base class. </summary>
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  class Quadrature
-  {
-  public:
-    Quadrature(unsigned int n) : _n(n) {
-      this->points.resize(_n);
-      this->weights.resize(_n);
-    }
-
-    std::vector<double> points;
-    std::vector<double> weights;
-
-    unsigned int n() const { return _n; }
-  private:
-    unsigned int _n;
-  };
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
   /// <summary> Integrates the given function. </summary>
   ///
   /// <typeparam name="QuadratureType"> Type of the quadrature type. </typeparam>
@@ -125,7 +125,7 @@ namespace quadrature {
   template <typename QuadratureType, unsigned int N, typename LambdaType> void integrate(LambdaType fun)
   {
     QuadratureType q;
-    detail::QuadratureHelper<QuadratureType, N> helper;
+    detail::QuadratureHelper<N> helper;
     helper.integrate(q, fun);
   }
 
@@ -141,7 +141,7 @@ namespace quadrature {
   template <typename QuadratureType, unsigned int N, typename LambdaType> void integrate(const detail::Interval<N>& interval, LambdaType fun)
   {
     QuadratureType q;
-    detail::QuadratureHelper<QuadratureType, N> helper;
+    detail::QuadratureHelper<N> helper;
     helper.integrate_interval(q, fun, interval);
   }
   ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,9 +153,9 @@ namespace quadrature {
   /// <param name="q">  Quadrature .</param>
   /// <param name="fun">the integration function.</param>
   ////////////////////////////////////////////////////////////////////////////////////////////////////
-  template <unsigned int N, typename QuadratureType, typename LambdaType> void integrate(const QuadratureType& q, LambdaType fun)
+  template <unsigned int N, typename LambdaType> void integrate(const Quadrature& q, LambdaType fun)
   {
-    detail::QuadratureHelper<QuadratureType, N> helper;
+    detail::QuadratureHelper<N> helper;
     helper.integrate(q, fun);
   }
 
@@ -169,9 +169,9 @@ namespace quadrature {
   /// <param name="q">  Quadrature .</param>
   /// <param name="fun">the integration function.</param>
   ////////////////////////////////////////////////////////////////////////////////////////////////////
-  template <unsigned int N, typename QuadratureType, typename LambdaType> void integrate(const QuadratureType& q, const detail::Interval<N>& interval, LambdaType fun)
+  template <unsigned int N, typename LambdaType> void integrate(const Quadrature& q, const detail::Interval<N>& interval, LambdaType fun)
   {
-    detail::QuadratureHelper<QuadratureType, N> helper;
+    detail::QuadratureHelper<N> helper;
     helper.integrate_interval(q, fun, interval);
   }
 

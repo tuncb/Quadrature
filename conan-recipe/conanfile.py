@@ -2,7 +2,7 @@ from conans import ConanFile
 
 class QuadratureConan(ConanFile):
     name = "quadrature"
-    version = "0.3.0"
+    version = "0.3.1"
     license = "https://www.apache.org/licenses/LICENSE-2.0"
     url = "https://github.com/tuncb/Quadrature"
     description = ("A small library for implementation of quadrature rules.")
