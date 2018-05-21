@@ -36,7 +36,9 @@ namespace quadrature::detail { // compute helpers
     PositionValuePair(const ContainerType &container, IntervalType interval) : interval(std::move(interval))
     {
       positions.fill(begin(container));
-      values.fill(transform(container.front(), interval.front()));
+      std::transform(begin(interval), end(interval), begin(values), [&container](const auto &range) {
+        return transform(container.front(), range);
+      });
     }
 
     void set_position(size_t index, IterType new_position)
@@ -155,7 +157,6 @@ namespace quadrature::detail { // integrate helpers
 }
 
 namespace quadrature {
-
   template <size_t NR_DIM, size_t NR_POINTS, typename T, typename ResultType, typename QuadratureFun>
   ResultType integrate(const Quadrature<T, NR_POINTS> &quadrature, Interval<T, NR_DIM> interval, ResultType initial_value, QuadratureFun fun)
   {
