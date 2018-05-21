@@ -1,178 +1,166 @@
 #pragma once
-#include <vector>
+#include <array>
 
 namespace quadrature {
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  /// <summary> Quadrature base class. </summary>
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  class Quadrature
+  template <typename T> struct QuadraturePoint
   {
-  public:
-    Quadrature(unsigned int n) : _n(n) {
-      this->points.resize(_n);
-      this->weights.resize(_n);
-    }
+    using value_type = T;
 
-    std::vector<double> points;
-    std::vector<double> weights;
-
-    unsigned int n() const { return _n; }
-  private:
-    unsigned int _n;
+    value_type position;
+    value_type weight;
   };
 
-  namespace detail {
+  template <typename T, size_t NR_POINTS> using Quadrature = std::array<QuadraturePoint<T>, NR_POINTS>;
 
-    template <unsigned int N> struct Interval {};
-    template <> struct Interval < 1 > { double a1; double b1; };
-    template <> struct Interval < 2 > { double a1; double b1; double a2; double b2; };
-    template <> struct Interval < 3 > { double a1; double b1; double a2; double b2; double a3; double b3; };
+  template <typename T, size_t NR_DIM> using Interval = std::array<std::pair<T, T>, NR_DIM>;
 
-    inline double change_point(double a, double b, double x) { return 0.5 * ((b - a)*x + a + b); }
-    inline double change_weight(double a, double b, double w) { return 0.5 * (b - a)*w; }
-
-    template <typename LambdaType> void change_interval(double a1, double b1, double x, double w1, LambdaType fun)
-    {
-      fun(change_point(a1, b1, x), change_weight(a1, b1, w1));
-    }
-    template <typename LambdaType> void change_interval(double a1, double a2, double b1, double b2, double x, double y, double w1, double w2, LambdaType fun)
-    {
-      fun(change_point(a1, b1, x), change_point(a2, b2, y), change_weight(a1, b1, w1), change_weight(a2, b2, w2));
-    }
-    template <typename LambdaType> void change_interval(double a1, double a2, double a3, double b1, double b2, double b3, double x, double y, double z, double w1, double w2, double w3, LambdaType fun)
-    {
-      fun(change_point(a1, b1, x), change_point(a2, b2, y), change_point(a3, b3, z), change_weight(a1, b1, w1), change_weight(a2, b2, w2), change_weight(a3, b3, w3));
-    }
-
-    template <unsigned int Dim> struct QuadratureHelper {};
-
-    template <> struct QuadratureHelper<1> {
-      template <typename LambdaType> void integrate_interval(const Quadrature& q, LambdaType fun, const detail::Interval<1>& interval)
-      {
-        for (unsigned int i = 0; i < q.n(); ++i) change_interval(interval.a1, interval.b1, q.points[i], q.weights[i], fun);
-      }
-      template <typename LambdaType> void integrate(const Quadrature& q, LambdaType fun)
-      {
-        for (unsigned int i = 0; i < q.n(); ++i) { fun(q.points[i], q.weights[i]); }
-      }
-    };
-
-    template <> struct QuadratureHelper<2> {
-      template <typename LambdaType> void integrate_interval(const Quadrature& q, LambdaType fun, const detail::Interval<2>& interval)
-      {
-        const auto n = q.n();
-        for (unsigned int i = 0; i < n; ++i) for (unsigned int j = 0; j < n; ++j) {
-          change_interval(interval.a1, interval.a2, interval.b1, interval.b2, q.points[i], q.points[j], q.weights[i], q.weights[j], fun);
-        }
-      }
-      template <typename LambdaType> void integrate(const Quadrature& q, LambdaType fun)
-      {
-        const auto n = q.n();
-        for (unsigned int i = 0; i < n; ++i) for (unsigned int j = 0; j < n; ++j) { fun(q.points[i], q.points[j], q.weights[i], q.weights[j]); }
-      }
-    };
-
-    template <> struct QuadratureHelper <3> {
-      template <typename LambdaType> void integrate_interval(const Quadrature& q, LambdaType fun, const detail::Interval<3>& interval)
-      {
-        const auto n = q.n();
-        for (unsigned int i = 0; i < n; ++i) for (unsigned int j = 0; j < n; ++j) for (unsigned int k = 0; k < n; ++k) {
-          change_interval(interval.a1, interval.a2, interval.a3, interval.b1, interval.b2, interval.b3, q.points[i], q.points[j], q.points[k], q.weights[i], q.weights[j], q.weights[k], fun);
-        }
-      }
-      template <typename LambdaType> void integrate(const Quadrature& q, LambdaType fun)
-      {
-        const auto n = q.n();
-        for (unsigned int i = 0; i < n; ++i) for (unsigned int j = 0; j < n; ++j) for (unsigned int k = 0; k < n; ++k) {
-          fun(q.points[i], q.points[j], q.points[k], q.weights[i], q.weights[j], q.weights[k]);
-        }
-      }
+  template <typename T> QuadraturePoint<T> transform(const QuadraturePoint<T> &point, const std::pair<T, T> &interval)
+  {
+    return QuadraturePoint<T>{
+      T(0.5) * ((interval.second - interval.first) * point.position + (interval.second + interval.first)),
+      T(0.5) * (interval.second - interval.first) * point.weight
     };
   }
+}
 
-
-  inline detail::Interval<1> make_interval(double a1, double b1)
+namespace quadrature::detail { // compute helpers
+  
+  // stores N iterators and their currsponding values from another container
+  template <typename ContainerType, typename IntervalType, size_t N> class PositionValuePair
   {
-    detail::Interval<1> i;
-    i.a1 = a1; i.b1 = b1;
-    return i;
-  }
-  inline detail::Interval<2> make_interval(double a1, double a2, double b1, double b2)
-  {
-    detail::Interval<2> i;
-    i.a1 = a1; i.b1 = b1;
-    i.a2 = a2; i.b2 = b2;
-    return i;
-  }
-  inline detail::Interval<3> make_interval(double a1, double a2, double a3, double b1, double b2, double b3)
-  {
-    detail::Interval<3> i;
-    i.a1 = a1; i.b1 = b1;
-    i.a2 = a2; i.b2 = b2;
-    i.a3 = a3; i.b3 = b3;
-    return i;
-  }
+  public:
+    using IterType = typename ContainerType::const_iterator;
+    using ValueType = typename ContainerType::value_type;
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  /// <summary> Integrates the given function. </summary>
-  ///
-  /// <typeparam name="QuadratureType"> Type of the quadrature type. </typeparam>
-  /// <typeparam name="N">              Number of dimentions  </typeparam>
-  /// <typeparam name="LambdaType">     Type of the integration function. </typeparam>
-  /// <param name="fun"> the integration function. </param>
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  template <typename QuadratureType, unsigned int N, typename LambdaType> void integrate(LambdaType fun)
+    PositionValuePair(const ContainerType &container, IntervalType interval) : interval(std::move(interval))
+    {
+      positions.fill(begin(container));
+      std::transform(begin(interval), end(interval), begin(values), [&container](const auto &range) {
+        return transform(container.front(), range);
+      });
+    }
+
+    void set_position(size_t index, IterType new_position)
+    {
+      positions[index] = new_position;
+      values[index] = transform(*new_position, interval[index]);
+    }
+
+    const std::array<IterType, N>& get_positions() 
+    {
+      return positions;
+    }
+
+    const std::array<ValueType, N>& get_values()
+    {
+      return values;
+    }
+
+  private:
+    std::array<IterType, N> positions;
+    std::array<ValueType, N> values;
+
+    IntervalType interval;
+  };
+
+  template <typename ContainerType, typename PositionValuePairType>
+  bool inc_position(const ContainerType &value_storage, PositionValuePairType &pos_value, size_t index)
   {
-    QuadratureType q;
-    detail::QuadratureHelper<N> helper;
-    helper.integrate(q, fun);
+    if (pos_value.get_positions()[index] + 1 != end(value_storage)) {
+      pos_value.set_position(index, pos_value.get_positions()[index] + 1);
+      return true;
+    }
+
+    if (index != 0) {
+      pos_value.set_position(index, begin(value_storage));
+      return inc_position(value_storage, pos_value, index - 1);
+    }
+
+    return false;
   }
+}
 
-
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  /// <summary> Integrates the given function. </summary>
-  ///
-  /// <typeparam name="QuadratureType"> Type of the quadrature type. </typeparam>
-  /// <typeparam name="N">              Number of dimentions  </typeparam>
-  /// <typeparam name="LambdaType">     Type of the integration function. </typeparam>
-  /// <param name="fun"> the integration function. </param>
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  template <typename QuadratureType, unsigned int N, typename LambdaType> void integrate(const detail::Interval<N>& interval, LambdaType fun)
+namespace quadrature {
+  template <size_t NR_DIM, typename QuadratureType, typename IntervalType, typename QuadratureFun>
+  void compute(const QuadratureType &quadrature, IntervalType interval, QuadratureFun fun)
   {
-    QuadratureType q;
-    detail::QuadratureHelper<N> helper;
-    helper.integrate_interval(q, fun, interval);
+    auto pos_value = detail::PositionValuePair<QuadratureType, IntervalType, NR_DIM>{quadrature, std::move(interval)};
+
+    do {
+      fun(pos_value.get_values());
+    } while (detail::inc_position(quadrature, pos_value, NR_DIM - 1));
   }
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  /// <summary>Integrates the given function with the given quadrature variable </summary>
-  ///
-  /// <typeparam name="QuadratureType">Type of the quadrature type.</typeparam>
-  /// <typeparam name="N">             Number of dimentions</typeparam>
-  /// <typeparam name="LambdaType">    Type of the integration function.</typeparam>
-  /// <param name="q">  Quadrature .</param>
-  /// <param name="fun">the integration function.</param>
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  template <unsigned int N, typename LambdaType> void integrate(const Quadrature& q, LambdaType fun)
+}
+
+namespace quadrature::detail { // integrate helpers
+  template <size_t NR_DIM> struct IntegrationHelper
   {
-    detail::QuadratureHelper<N> helper;
-    helper.integrate(q, fun);
-  }
+    template <typename ResultType, typename QuadratureType, typename IntervalType, typename QuadratureFun>
+    ResultType integrate(const QuadratureType &quadrature, IntervalType interval, ResultType initial_value, QuadratureFun fun)
+    {
+      using QuadraturePointType = typename QuadratureType::value_type;
 
+      auto sum = initial_value;
+      compute<NR_DIM>(quadrature, interval, [&sum](const std::array<QuadraturePointType, NR_DIM> &integration_points) {
+        sum = sum + fun(integration_points);
+      });
+      return sum;
+    }
+  };
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  /// <summary>Integrates the given function with the given quadrature variable </summary>
-  ///
-  /// <typeparam name="QuadratureType">Type of the quadrature type.</typeparam>
-  /// <typeparam name="N">             Number of dimentions</typeparam>
-  /// <typeparam name="LambdaType">    Type of the integration function.</typeparam>
-  /// <param name="q">  Quadrature .</param>
-  /// <param name="fun">the integration function.</param>
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
-  template <unsigned int N, typename LambdaType> void integrate(const Quadrature& q, const detail::Interval<N>& interval, LambdaType fun)
+  template <> struct IntegrationHelper<1>
   {
-    detail::QuadratureHelper<N> helper;
-    helper.integrate_interval(q, fun, interval);
-  }
+    template <typename ResultType, typename QuadratureType, typename IntervalType, typename QuadratureFun>
+    ResultType integrate(const QuadratureType &quadrature, IntervalType interval, ResultType initial_value, QuadratureFun fun)
+    {
+      using QuadraturePointType = typename QuadratureType::value_type;
 
+      auto sum = initial_value;
+      compute<1>(quadrature, interval, [&sum, fun](const std::array<QuadraturePointType, 1> &integration_points) {
+        sum = sum + fun(integration_points[0].position) * integration_points[0].weight;
+      });
+      return sum;
+    }
+  };
+
+  template <> struct IntegrationHelper<2>
+  {
+    template <typename ResultType, typename QuadratureType, typename IntervalType, typename QuadratureFun>
+    ResultType integrate(const QuadratureType &quadrature, IntervalType interval, ResultType initial_value, QuadratureFun fun)
+    {
+      using QuadraturePointType = typename QuadratureType::value_type;
+
+      auto sum = initial_value;
+      compute<2>(quadrature, interval, [&sum, fun](const std::array<QuadraturePointType, 2> &integration_points) {
+        sum = sum + fun(integration_points[0].position, integration_points[1].position) * integration_points[0].weight * integration_points[1].weight;
+      });
+      return sum;
+    }
+  };
+
+  template <> struct IntegrationHelper<3>
+  {
+    template <typename ResultType, typename QuadratureType, typename IntervalType, typename QuadratureFun>
+    ResultType integrate(const QuadratureType &quadrature, IntervalType interval, ResultType initial_value, QuadratureFun fun)
+    {
+      using QuadraturePointType = typename QuadratureType::value_type;
+
+      auto sum = initial_value;
+      compute<3>(quadrature, interval, [&sum, fun](const std::array<QuadraturePointType, 3> &integration_points) {
+        sum = sum + fun(integration_points[0].position, integration_points[1].position, integration_points[2].position) *
+          integration_points[0].weight * integration_points[1].weight * integration_points[2].weight;
+      });
+      return sum;
+    }
+  };
+}
+
+namespace quadrature {
+  template <size_t NR_DIM, size_t NR_POINTS, typename T, typename ResultType, typename QuadratureFun>
+  ResultType integrate(const Quadrature<T, NR_POINTS> &quadrature, Interval<T, NR_DIM> interval, ResultType initial_value, QuadratureFun fun)
+  {
+    detail::IntegrationHelper<NR_DIM> helper;
+    return helper.integrate(quadrature, interval, initial_value, fun);
+  }
 }
