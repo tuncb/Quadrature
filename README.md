@@ -27,7 +27,7 @@ Documentation
 
 template <typename T> T fun(T x) 
 { 
-  return 2 * x * x + 3 * x + T(5.0); 
+  return 2 * x * x + 3 * x + 5; 
 };
 
 template <typename T> T fun2d(T x, T y)
