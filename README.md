@@ -25,7 +25,6 @@ Documentation
 #include <quadrature/quadrature.h>
 #include <quadrature/gaussian.h> // currently only Gaussian quadrature with up to 6 points is available.
 
-// for 1 dimension
 template <typename T> T fun(T x) 
 { 
   return 2 * x * x + 3 * x + T(5.0); 
@@ -45,6 +44,7 @@ auto interval_1d = Interval<double, 1>{{ {-2.0, 2.0} }};
 auto interval_2d = Interval<double, 2>{{ {-1.0, 5.0}, {1.0, 5.0} }};
 auto interval_3d = Interval<double, 3>{{ {1, 2}, {-0.5, -0.25}, {-3.5, 7.5} }};
 
+// make_gaussian<double, 4> -> Gauss quadrature with four points
 auto sum1d = integrate<1>(make_gaussian<double, 4>(), interval, 0.0, fun<double>)
 auto sum2d = integrate<2>(make_gaussian<double, 4>(), interval, 0.0, fun2d<double>) 
 auto sum3d = integrate<3>(make_gaussian<double, 4>(), interval, 0.0, fun3d<double>)
