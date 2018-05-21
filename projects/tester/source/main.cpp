@@ -3,185 +3,78 @@
 #include "catch.hpp"
 #include <quadrature\Gaussian.h>
 
-TEST_CASE("quadrature::integrate with Gauss", "[integrate]") 
+using namespace quadrature;
+
+template <typename T> T fun(T x) 
+{ 
+  return 2 * x * x + 3 * x + T(5.0); 
+};
+
+template <typename T> T fun2d(T x, T y)
 {
-  auto compute_pos = [](double x) { return x + 1.0; };
+  return x * x + y + 3;
+};
 
-  SECTION("#Dimension = 1, #Integration Points = 1")
-  {
-    double sum = 0.0;
-    quadrature::integrate<quadrature::Gaussian<1>, 1>([&](double ip1, double w1) {
-      sum += compute_pos(ip1) * w1;
-    });
-    REQUIRE(sum == Approx(2.0));
-  }
+template <typename T> T fun3d(T x, T y, T z)
+{
+  return x + y * y + 3 * z * z * z  + 3;
+};
 
-  SECTION("Dimension = 2, #Integration Points = 1")
-  {
-    const unsigned int ndim = 2;
-    double sum = 0.0;
-    quadrature::integrate<quadrature::Gaussian<1>, ndim>([&](double ip1, double ip2, double w1, double w2) {
-      sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
-    });
-    REQUIRE(sum == Approx(4.0));
+TEST_CASE("quadrature::integrate with Gauss in range(-1, 1)", "[integrate]") 
+{
+  SECTION("#Dimension = 1, T = double")
+  {   
+    const auto REAL_VALUE = 11 + 1.0 / 3.0;
+
+    REQUIRE(quadrature::integrate<1>(make_gaussian<double, 1>(), 0.0, fun<double>) == Approx(REAL_VALUE).margin(1.5)); // single point gauss is not enough to get the correct result
+    REQUIRE(quadrature::integrate<1>(make_gaussian<double, 2>(), 0.0, fun<double>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<1>(make_gaussian<double, 3>(), 0.0, fun<double>) == Approx(REAL_VALUE));
   }
   
-  SECTION("Dimension = 3, #Integration Points = 1")
+  SECTION("#Dimension = 1, T = float")
   {
-    const unsigned int ndim = 3;
-    double sum = 0.0;
-    quadrature::integrate<quadrature::Gaussian<1>, ndim>([&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
-      sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
-    });
-    REQUIRE(sum == Approx(8.0));
+    const auto REAL_VALUE = 11 + 1.0f / 3.0f;
+
+    REQUIRE(quadrature::integrate<1>(make_gaussian<float, 1>(), 0.0f, fun<float>) == Approx(REAL_VALUE).margin(1.5f)); // single point gauss is not enough to get the correct result
+    REQUIRE(quadrature::integrate<1>(make_gaussian<float, 2>(), 0.0f, fun<float>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<1>(make_gaussian<float, 3>(), 0.0f, fun<float>) == Approx(REAL_VALUE));
   }
 
-  SECTION("Dimension = 1, #Integration Points = 2")
+  SECTION("#Dimension = 2, T = double")
   {
-    double sum = 0.0;
-    quadrature::integrate<quadrature::Gaussian<2>, 1>([&](double ip1, double w1) {
-      sum += compute_pos(ip1) * w1;
-    });
-    REQUIRE(sum == Approx(2.0));
+    const auto REAL_VALUE = 13 + 1.0 / 3.0;
+
+    REQUIRE(quadrature::integrate<2>(make_gaussian<double, 1>(), 0.0, fun2d<double>) == Approx(REAL_VALUE).margin(1.5)); // single point gauss is not enough to get the correct result
+    REQUIRE(quadrature::integrate<2>(make_gaussian<double, 2>(), 0.0, fun2d<double>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<2>(make_gaussian<double, 3>(), 0.0, fun2d<double>) == Approx(REAL_VALUE));
   }
 
-  SECTION("Dimension = 2, #Integration Points = 2")
+  SECTION("#Dimension = 2, T = float")
   {
-    const unsigned int ndim = 2;
-    double sum = 0.0;
-    quadrature::integrate<quadrature::Gaussian<2>, ndim>([&](double ip1, double ip2, double w1, double w2) {
-      sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
-    });
-    REQUIRE(sum == Approx(4.0));
+    const auto REAL_VALUE = 13 + 1.0f / 3.0f;
+
+    REQUIRE(quadrature::integrate<2>(make_gaussian<float, 1>(), 0.0f, fun2d<float>) == Approx(REAL_VALUE).margin(1.5)); // single point gauss is not enough to get the correct result
+    REQUIRE(quadrature::integrate<2>(make_gaussian<float, 2>(), 0.0f, fun2d<float>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<2>(make_gaussian<float, 3>(), 0.0f, fun2d<float>) == Approx(REAL_VALUE));
   }
 
-  SECTION("Dimension = 3, #Integration Points = 2")
+  SECTION("#Dimension = 3, T = double")
   {
-    const unsigned int ndim = 3;
-    double sum = 0.0;
-    quadrature::integrate<quadrature::Gaussian<2>, ndim>([&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
-      sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
-    });
-    REQUIRE(sum == Approx(8.0));
+    const auto REAL_VALUE = 26 + 2.0 / 3.0;
+
+    REQUIRE(quadrature::integrate<3>(make_gaussian<double, 1>(), 0.0, fun3d<double>) == Approx(REAL_VALUE).margin(3)); // single point gauss is not enough to get the correct result
+    REQUIRE(quadrature::integrate<3>(make_gaussian<double, 2>(), 0.0, fun3d<double>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<3>(make_gaussian<double, 3>(), 0.0, fun3d<double>) == Approx(REAL_VALUE));
   }
 
-  SECTION("Dimension = 1, #Integration Points = 3")
+  SECTION("#Dimension = 3, T = float")
   {
-    double sum = 0.0;
-    quadrature::integrate<quadrature::Gaussian<3>, 1>([&](double ip1, double w1) {
-      sum += compute_pos(ip1) * w1;
-    });
-    REQUIRE(sum == Approx(2.0));
-  }
+    const auto REAL_VALUE = 26 + 2.0f / 3.0f;
 
-  SECTION("Dimension = 2, #Integration Points = 3")
-  {
-    const unsigned int ndim = 2;
-    double sum = 0.0;
-    quadrature::integrate<quadrature::Gaussian<3>, ndim>([&](double ip1, double ip2, double w1, double w2) {
-      sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
-    });
-    REQUIRE(sum == Approx(4.0));
+    REQUIRE(quadrature::integrate<3>(make_gaussian<float, 1>(), 0.0f, fun3d<float>) == Approx(REAL_VALUE).margin(3)); // single point gauss is not enough to get the correct result
+    REQUIRE(quadrature::integrate<3>(make_gaussian<float, 2>(), 0.0f, fun3d<float>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<3>(make_gaussian<float, 3>(), 0.0f, fun3d<float>) == Approx(REAL_VALUE));
   }
-
-  SECTION("Dimension = 3, #Integration Points = 3")
-  {
-    const unsigned int ndim = 3;
-    double sum = 0.0;
-    quadrature::integrate<quadrature::Gaussian<3>, ndim>([&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
-      sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
-    });
-    REQUIRE(sum == Approx(8.0));
-  }
-
-  SECTION("Dimension = 1, #Integration Points = 4")
-  {
-    double sum = 0.0;
-    quadrature::integrate<quadrature::Gaussian<4>, 1>([&](double ip1, double w1) {
-      sum += compute_pos(ip1) * w1;
-    });
-    REQUIRE(sum == Approx(2.0));
-  }
-
-  SECTION("Dimension = 2, #Integration Points = 4")
-  {
-    const unsigned int ndim = 2;
-    double sum = 0.0;
-    quadrature::integrate<quadrature::Gaussian<4>, ndim>([&](double ip1, double ip2, double w1, double w2) {
-      sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
-    });
-    REQUIRE(sum == Approx(4.0));
-  }
-
-  SECTION("Dimension = 3, #Integration Points = 4")
-  {
-    const unsigned int ndim = 3;
-    double sum = 0.0;
-    quadrature::integrate<quadrature::Gaussian<4>, ndim>([&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
-      sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
-    });
-    REQUIRE(sum == Approx(8.0));
-  }
-
-  SECTION("Dimension = 1, #Integration Points = 5")
-  {
-    double sum = 0.0;
-    quadrature::integrate<quadrature::Gaussian<5>, 1>([&](double ip1, double w1) {
-      sum += compute_pos(ip1) * w1;
-    });
-    REQUIRE(sum == Approx(2.0));
-  }
-
-  SECTION("Dimension = 2, #Integration Points = 5")
-  {
-    const unsigned int ndim = 2;
-    double sum = 0.0;
-    quadrature::integrate<quadrature::Gaussian<5>, ndim>([&](double ip1, double ip2, double w1, double w2) {
-      sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
-    });
-    REQUIRE(sum == Approx(4.0));
-  }
-
-  SECTION("Dimension = 3, #Integration Points = 5")
-  {
-    const unsigned int ndim = 3;
-    double sum = 0.0;
-    quadrature::integrate<quadrature::Gaussian<5>, ndim>([&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
-      sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
-    });
-    REQUIRE(sum == Approx(8.0));
-  }
-
-
-  SECTION("Dimension = 1, #Integration Points = 6")
-  {
-    double sum = 0.0;
-    auto q = quadrature::Gaussian<6>();
-    quadrature::integrate<1>(q, [&](double ip1, double w1) {
-      sum += compute_pos(ip1) * w1;
-    });
-    REQUIRE(sum == Approx(2.0));
-  }
-
-  SECTION("Dimension = 2, #Integration Points = 6")
-  {
-    const unsigned int ndim = 2;
-    double sum = 0.0;
-    auto q = quadrature::Gaussian<6>();
-    quadrature::integrate<ndim>(q, [&](double ip1, double ip2, double w1, double w2) {
-      sum += compute_pos(ip1) * compute_pos(ip2) * w1 * w2;
-    });
-    REQUIRE(sum == Approx(4.0));
-  }
-
-  SECTION("Dimension = 3, #Integration Points = 6")
-  {
-    const unsigned int ndim = 3;
-    double sum = 0.0;
-    auto q = quadrature::Gaussian<6>();
-    quadrature::integrate<ndim>(q, [&](double ip1, double ip2, double ip3, double w1, double w2, double w3) {
-      sum += compute_pos(ip1) * compute_pos(ip2) * compute_pos(ip3) * w1 * w2 * w3;
-    });
-    REQUIRE(sum == Approx(8.0));
-  }
+  
 }
+
