@@ -1,17 +1,19 @@
 #include <iostream>
-#include <quadrature\Gaussian.h>
+#include <quadrature\gaussian.h>
 
-double compute_pos(double x) 
-{ 
-  return x + 1.0;
-}
+template <typename T> T fun2d(T x, T y)
+{
+  return x * x + y + 3;
+};
 
 int main()
 {
-  double sum = 0.0;
-  quadrature::integrate<quadrature::Gaussian<2>, 1>([&](double ip1, double w1) {
-    sum += compute_pos(ip1) * w1;
-  });
+  using namespace quadrature;
 
-  std::cout << "Sum should be 2.0. It is " << sum << "\n";
+  auto interval = Interval<double, 2>{{ {-1.0, 5.0}, {1.0, 5.0} }};
+
+  const auto REAL_VALUE = 312.0;
+  double sum = integrate<2>(make_gaussian<double, 3>(), interval, 0.0, fun2d<double>);
+
+  std::cout << "Sum should be " << REAL_VALUE << ". It is " << sum << "\n";
 }
