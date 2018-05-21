@@ -34,6 +34,48 @@ namespace quadrature::detail {
       };
     }
   };
+
+  template <typename T> struct GaussianHelper<T, 4>
+  {
+    Quadrature<T, 4> make_gaussian()
+    {
+      return {
+        QuadraturePoint<T>{T(-0.3399810435848563), T(0.6521451548625461)},
+        QuadraturePoint<T>{T(0.3399810435848563), T(0.6521451548625461)},
+        QuadraturePoint<T>{T(-0.8611363115940526), T(0.3478548451374538)},
+        QuadraturePoint<T>{T(0.8611363115940526), T(0.3478548451374538)}
+      };
+    }
+  };
+
+  template <typename T> struct GaussianHelper<T, 5>
+  {
+    Quadrature<T, 5> make_gaussian()
+    {
+      return {
+        QuadraturePoint<T>{T(0.0), T(0.5688888888888889)},
+        QuadraturePoint<T>{T(-0.5384693101056831), T(0.4786286704993665)},
+        QuadraturePoint<T>{T(0.5384693101056831), T(0.4786286704993665)},
+        QuadraturePoint<T>{T(-0.9061798459386640), T(0.2369268850561891)},
+        QuadraturePoint<T>{T(0.9061798459386640), T(0.2369268850561891)}
+      };
+    }
+  };
+
+  template <typename T> struct GaussianHelper<T, 6>
+  {
+    Quadrature<T, 6> make_gaussian()
+    {
+      return {
+        QuadraturePoint<T>{T(0.6612093864662645), T(0.3607615730481386)},
+        QuadraturePoint<T>{T(-0.6612093864662645), T(0.3607615730481386)},
+        QuadraturePoint<T>{T(-0.2386191860831969), T(0.4679139345726910)},
+        QuadraturePoint<T>{T(0.2386191860831969), T(0.4679139345726910)},
+        QuadraturePoint<T>{T(-0.9324695142031521), T(0.1713244923791704)},
+        QuadraturePoint<T>{T(0.9324695142031521), T(0.1713244923791704)}
+      };
+    }
+  };
 }
 
 namespace quadrature {

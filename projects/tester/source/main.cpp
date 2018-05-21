@@ -29,6 +29,9 @@ TEST_CASE("quadrature::integrate with Gauss in range(-1, 1)", "[integrate]")
     REQUIRE(quadrature::integrate<1>(make_gaussian<double, 1>(), 0.0, fun<double>) == Approx(REAL_VALUE).margin(1.5)); // single point gauss is not enough to get the correct result
     REQUIRE(quadrature::integrate<1>(make_gaussian<double, 2>(), 0.0, fun<double>) == Approx(REAL_VALUE));
     REQUIRE(quadrature::integrate<1>(make_gaussian<double, 3>(), 0.0, fun<double>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<1>(make_gaussian<double, 4>(), 0.0, fun<double>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<1>(make_gaussian<double, 5>(), 0.0, fun<double>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<1>(make_gaussian<double, 6>(), 0.0, fun<double>) == Approx(REAL_VALUE));
   }
   
   SECTION("#Dimension = 1, T = float")
@@ -38,6 +41,9 @@ TEST_CASE("quadrature::integrate with Gauss in range(-1, 1)", "[integrate]")
     REQUIRE(quadrature::integrate<1>(make_gaussian<float, 1>(), 0.0f, fun<float>) == Approx(REAL_VALUE).margin(1.5f)); // single point gauss is not enough to get the correct result
     REQUIRE(quadrature::integrate<1>(make_gaussian<float, 2>(), 0.0f, fun<float>) == Approx(REAL_VALUE));
     REQUIRE(quadrature::integrate<1>(make_gaussian<float, 3>(), 0.0f, fun<float>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<1>(make_gaussian<float, 4>(), 0.0f, fun<float>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<1>(make_gaussian<float, 5>(), 0.0f, fun<float>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<1>(make_gaussian<float, 6>(), 0.0f, fun<float>) == Approx(REAL_VALUE));
   }
 
   SECTION("#Dimension = 2, T = double")
@@ -47,6 +53,9 @@ TEST_CASE("quadrature::integrate with Gauss in range(-1, 1)", "[integrate]")
     REQUIRE(quadrature::integrate<2>(make_gaussian<double, 1>(), 0.0, fun2d<double>) == Approx(REAL_VALUE).margin(1.5)); // single point gauss is not enough to get the correct result
     REQUIRE(quadrature::integrate<2>(make_gaussian<double, 2>(), 0.0, fun2d<double>) == Approx(REAL_VALUE));
     REQUIRE(quadrature::integrate<2>(make_gaussian<double, 3>(), 0.0, fun2d<double>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<2>(make_gaussian<double, 4>(), 0.0, fun2d<double>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<2>(make_gaussian<double, 5>(), 0.0, fun2d<double>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<2>(make_gaussian<double, 6>(), 0.0, fun2d<double>) == Approx(REAL_VALUE));
   }
 
   SECTION("#Dimension = 2, T = float")
@@ -56,6 +65,9 @@ TEST_CASE("quadrature::integrate with Gauss in range(-1, 1)", "[integrate]")
     REQUIRE(quadrature::integrate<2>(make_gaussian<float, 1>(), 0.0f, fun2d<float>) == Approx(REAL_VALUE).margin(1.5)); // single point gauss is not enough to get the correct result
     REQUIRE(quadrature::integrate<2>(make_gaussian<float, 2>(), 0.0f, fun2d<float>) == Approx(REAL_VALUE));
     REQUIRE(quadrature::integrate<2>(make_gaussian<float, 3>(), 0.0f, fun2d<float>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<2>(make_gaussian<float, 4>(), 0.0f, fun2d<float>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<2>(make_gaussian<float, 5>(), 0.0f, fun2d<float>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<2>(make_gaussian<float, 6>(), 0.0f, fun2d<float>) == Approx(REAL_VALUE));
   }
 
   SECTION("#Dimension = 3, T = double")
@@ -65,6 +77,9 @@ TEST_CASE("quadrature::integrate with Gauss in range(-1, 1)", "[integrate]")
     REQUIRE(quadrature::integrate<3>(make_gaussian<double, 1>(), 0.0, fun3d<double>) == Approx(REAL_VALUE).margin(3)); // single point gauss is not enough to get the correct result
     REQUIRE(quadrature::integrate<3>(make_gaussian<double, 2>(), 0.0, fun3d<double>) == Approx(REAL_VALUE));
     REQUIRE(quadrature::integrate<3>(make_gaussian<double, 3>(), 0.0, fun3d<double>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<3>(make_gaussian<double, 4>(), 0.0, fun3d<double>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<3>(make_gaussian<double, 5>(), 0.0, fun3d<double>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<3>(make_gaussian<double, 6>(), 0.0, fun3d<double>) == Approx(REAL_VALUE));
   }
 
   SECTION("#Dimension = 3, T = float")
@@ -74,6 +89,9 @@ TEST_CASE("quadrature::integrate with Gauss in range(-1, 1)", "[integrate]")
     REQUIRE(quadrature::integrate<3>(make_gaussian<float, 1>(), 0.0f, fun3d<float>) == Approx(REAL_VALUE).margin(3)); // single point gauss is not enough to get the correct result
     REQUIRE(quadrature::integrate<3>(make_gaussian<float, 2>(), 0.0f, fun3d<float>) == Approx(REAL_VALUE));
     REQUIRE(quadrature::integrate<3>(make_gaussian<float, 3>(), 0.0f, fun3d<float>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<3>(make_gaussian<float, 4>(), 0.0f, fun3d<float>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<3>(make_gaussian<float, 5>(), 0.0f, fun3d<float>) == Approx(REAL_VALUE));
+    REQUIRE(quadrature::integrate<3>(make_gaussian<float, 6>(), 0.0f, fun3d<float>) == Approx(REAL_VALUE));
   }
   
 }

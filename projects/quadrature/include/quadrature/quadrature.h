@@ -1,6 +1,5 @@
 #pragma once
 #include <array>
-#include <quadrature/quadrature_detail.h>
 
 namespace quadrature {
 
