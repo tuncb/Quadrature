@@ -45,7 +45,8 @@ auto interval_2d = Interval<double, 2>{{ {-1.0, 5.0}, {1.0, 5.0} }};
 auto interval_3d = Interval<double, 3>{{ {1, 2}, {-0.5, -0.25}, {-3.5, 7.5} }};
 
 // make_gaussian<double, 4> -> Gauss quadrature with four points
-auto sum1d = integrate<1>(make_gaussian<double, 4>(), interval, 0.0, fun<double>)
-auto sum2d = integrate<2>(make_gaussian<double, 4>(), interval, 0.0, fun2d<double>) 
-auto sum3d = integrate<3>(make_gaussian<double, 4>(), interval, 0.0, fun3d<double>)
+// 0.0 -> initial value for the integration
+auto sum1d = integrate<1>(make_gaussian<double, 4>(), interval_1d, 0.0, fun<double>)
+auto sum2d = integrate<2>(make_gaussian<double, 4>(), interval_2d, 0.0, fun2d<double>) 
+auto sum3d = integrate<3>(make_gaussian<double, 4>(), interval_3d, 0.0, fun3d<double>)
 ```
