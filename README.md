@@ -16,8 +16,8 @@ Installation
 Header only. Just include the files under the projects\quadrature\include\ folder
 
 or use conan io -> 
-* quadrature[@conan](https://dl.bintray.com/tuncb/pangea)
-* quadrature/1.0.0@tuncb/pangea
+* quadrature[@conan](https://dl.bintray.com/tuncb/stable)
+* quadrature/1.0.0@tuncb/stable
 
 Documentation
 -----------
